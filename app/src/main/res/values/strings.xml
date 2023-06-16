@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Template</string>
+
+    <string name="share_message">Checkout this awesome application: https://play.google.com/store/apps/details?id=%1$s</string>
+   <string name="email_prompt">Send email via…</string>
+   <string name="channel_name">Channel name</string>
+   <string name="channel_description">Channel description</string>
+   <string name="no_browser">Please install an Internet Browser to view this web page</string>
+
+</resources>

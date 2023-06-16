@@ -1,0 +1,23 @@
+apply plugin: "com.android.library"
+
+
+android {
+    compileSdkVersion 34
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 34
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+   namespace 'com.dzboot'
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+}

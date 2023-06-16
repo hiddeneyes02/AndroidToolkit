@@ -1,0 +1,3 @@
+rootProject.name = "Android Toolkit"
+
+include ':app', ':countryUtils'

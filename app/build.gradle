@@ -1,0 +1,183 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
+apply plugin: "com.google.firebase.firebase-perf"
+
+
+android {
+
+   namespace 'com.dzboot.template'
+
+   compileSdkVersion 34
+
+   defaultConfig {
+      applicationId "com.dzboot.template"
+      minSdkVersion 16
+      targetSdkVersion 34
+      versionCode 1
+      versionName "1.0"
+      multiDexEnabled true
+      vectorDrawables.useSupportLibrary = true
+   }
+
+   signingConfigs {
+      config {
+         storeFile file("../keys.jks")
+         storePassword "pass"
+         keyAlias "key0"
+         keyPassword "pass"
+      }
+   }
+
+   buildTypes {
+
+      //TODO CHANGE THESE CODES to your codes
+      //there are test ads, they will be used when debugging
+      def adMobAppId = "ca-app-pub-3940256099942544~3347511713"
+      def adMobBannerKey = "ca-app-pub-3940256099942544/6300978111"
+      def adMobNativeKey = "ca-app-pub-3940256099942544/2247696110"
+      def adMobInterstitialKey = "ca-app-pub-3940256099942544/1033173712"
+
+      release {
+         minifyEnabled false
+         proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
+         signingConfig signingConfigs.config
+
+         manifestPlaceholders = [crashlyticsEnabled: true, adMobAppId: adMobAppId]
+         buildConfigField "String", "ADMOB_BANNER_KEY", "\"${adMobBannerKey}\""
+         buildConfigField "String", "ADMOB_NATIVE_KEY", "\"${adMobNativeKey}\""
+         buildConfigField "String", "ADMOB_INTERSTITIAL_KEY", "\"${adMobInterstitialKey}\""
+//         resValue "string", "admob_banner_key", adMobBannerKey
+      }
+
+      debug {
+         splits.abi.enable = false
+         splits.density.enable = false
+         aaptOptions.cruncherEnabled = false
+//            ext.enableCrashlytics = false
+
+         manifestPlaceholders = [crashlyticsEnabled: false, adMobAppId: admobTestAppId]
+         buildConfigField "String", "ADMOB_BANNER_KEY", "\"${admobTestBannerKey}\""
+         buildConfigField "String", "ADMOB_NATIVE_KEY", "\"${admobTestNativeKey}\""
+         buildConfigField "String", "ADMOB_INTERSTITIAL_KEY", "\"${admobTestInterstitialKey}\""
+//         resValue "string", "admob_banner_key", admobTestBannerKey
+      }
+   }
+
+   flavorDimensions "country"
+   productFlavors {
+      us {
+         dimension "country"
+         applicationIdSuffix ".us"
+         buildConfigField "String", "COUNTRY_CODE", "\"us\""
+      }
+
+      tr {
+         dimension "country"
+         applicationIdSuffix ".tr"
+         buildConfigField "String", "COUNTRY_CODE", "\"es\""
+      }
+   }
+
+   buildFeatures {
+      viewBinding true
+      buildConfig true
+   }
+
+   bundle {
+      language {
+         enableSplit false
+      }
+   }
+}
+
+
+dependencies {
+   implementation fileTree(dir: "libs", include: ["*.jar"])
+   implementation project(":countryUtils")
+
+   implementation "androidx.appcompat:appcompat:$appCompatVersion"
+   implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+   implementation "com.google.android.material:material:$materielVersion"
+   implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+   implementation "androidx.multidex:multidex:2.0.1"
+   implementation "androidx.core:core-ktx:1.10.1"
+   implementation "androidx.fragment:fragment-ktx:1.6.0"
+   implementation "androidx.preference:preference-ktx:1.2.0"
+
+   implementation "com.jakewharton.timber:timber:5.0.1"
+
+   //Firebase
+   implementation platform("com.google.firebase:firebase-bom:25.11.0")
+   implementation "com.google.firebase:firebase-core"
+   implementation "com.google.firebase:firebase-crashlytics"
+
+   //Google Play Billing
+   implementation "com.android.billingclient:billing:6.0.0"
+
+   //Firebase auth
+   implementation "com.google.firebase:firebase-auth"
+
+   //Google auth
+   implementation "com.google.android.gms:play-services-auth:20.5.0"
+
+   //facebook
+   implementation "com.facebook.android:facebook-android-sdk:5.15.3"
+
+   //Gson
+   implementation "com.google.code.gson:gson:2.10.1"
+
+   def okhttpVersion = "4.9.0"
+   implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+   implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+
+   // Retrofit
+   def retrofitVersion = "2.9.0"
+   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+   implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+   implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+   implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+   // Reactive Streams (convert Observable to LiveData)
+   def reactivestreamsVersion = "1.1.1"
+   implementation "android.arch.lifecycle:reactivestreams:$reactivestreamsVersion"
+
+   //Room
+   def roomVersion = "2.5.1"
+   implementation "androidx.room:room-runtime:$roomVersion"
+   implementation "androidx.room:room-ktx:$roomVersion"
+   kapt "androidx.room:room-compiler:$roomVersion"
+
+   // Glide
+   def glideVersion = "4.12.0"
+   implementation "com.github.bumptech.glide:glide:$glideVersion"
+   annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+   //Calligraphy
+   implementation "io.github.inflationx:calligraphy3:3.1.1"
+   implementation "io.github.inflationx:viewpump:2.0.3"
+
+   //play services
+   def playServicesVersion = "1.8.1"
+   implementation "com.google.android.play:core-ktx:$playServicesVersion"
+   implementation 'com.google.android.gms:play-services-basement:18.2.0'
+
+   //kotlin coroutines
+   def coroutineVersion = '1.6.4'
+   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+
+   //LocaleHelper
+   implementation 'com.zeugmasolutions.localehelper:locale-helper-android:1.5.1'
+
+//TODO
+   implementation "com.mikepenz:iconics-core:5.4.0"
+   implementation "com.mikepenz:google-material-typeface:3.0.1.4.original-kotlin@aar"
+   implementation "com.mikepenz:material-design-iconic-typeface:2.2.0.4@aar"
+   implementation "com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar"
+
+}
+
