@@ -232,6 +232,8 @@ object DisplayUtils {
 		val size = Point()
 		display.getSize(size)
 		val popupView = LayoutInflater.from(activity).inflate(layout, null)
+
+		//Very Important!: measure layout after all decoration and texts are added to the layout
 		popupView.measure(
 				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
 				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
